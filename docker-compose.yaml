@@ -1,0 +1,34 @@
+version: '3.9'
+services:
+  appnodes:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PASSWORD=Pass987!
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=dbnisa
+      - POSTGRES_PORT=5432
+    restart: unless-stopped
+
+  postgres:
+    container_name: postgresql
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    # ports:
+    #   - 5432:5432
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=Pass987!
+      - POSTGRES_DB=dbnisa
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    external: true
